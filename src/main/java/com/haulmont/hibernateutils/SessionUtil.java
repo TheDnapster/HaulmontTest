@@ -1,0 +1,39 @@
+package com.haulmont.hibernateutils;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class SessionUtil {
+
+    //Написал удобную утилиту для создания CRUD операций в сервисах.
+    private Session session;
+    private Transaction transaction;
+
+    public Session getSession() {
+        return session;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public Session openSession() {
+        return HibernateUtil.getSessionFactory().openSession();
+    }
+
+    public Session openTransactionSession() {
+        session = openSession();
+        transaction = session.beginTransaction();
+        return session;
+    }
+
+    public void closeSession() {
+        session.close();
+    }
+
+    public void closeTransactionSesstion() {
+        transaction.commit();
+        closeSession();
+    }
+
+}
